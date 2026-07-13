@@ -118,7 +118,68 @@ async function main() {
     warn("Migration command was skipped; the Worker self-bootstrap creates the same schema on first API request.");
   }
 
-  step(5, "Creating encrypted JWT signing secret");
+  step(5, "Configure optional file storage (R2 / S3-compatible)");
+  log(`${C.bold}Choose storage option:${C.reset}`);
+  log(`  [1] D1-only free-tier (default)`);
+  log(`  [2] Cloudflare R2 Bucket (automated creation & binding)`);
+  log(`  [3] External S3-Compatible (MinIO, Backblaze B2, AWS S3, Wasabi, etc.)`);
+  const storageOption = await ask("Enter option (1, 2, or 3)", "1");
+
+  if (storageOption === "2") {
+    const bucketName = await ask("Enter R2 Bucket Name", "prism-analytics-storage");
+    info(`Provisioning R2 bucket "${bucketName}"...`);
+    if (run(`npx wrangler r2 bucket create ${bucketName}`)) {
+      success(`R2 bucket "${bucketName}" created successfully!`);
+      const wranglerPath = path.join(__dirname, "wrangler.toml");
+      const wranglerContent = fs.readFileSync(wranglerPath, "utf8");
+      if (!wranglerContent.includes("FILES_BUCKET")) {
+        const r2Block = `\n\n[[r2_buckets]]\nbinding = "FILES_BUCKET"\nbucket_name = "${bucketName}"\n`;
+        fs.appendFileSync(wranglerPath, r2Block, "utf8");
+        success("Added R2 bucket binding to wrangler.toml");
+      }
+    } else {
+      warn("R2 bucket creation failed. It may already exist or required permissions are missing.");
+    }
+  } else if (storageOption === "3") {
+    const s3Endpoint = await ask("Enter S3 Endpoint (e.g. https://s3.us-west-002.backblazeb2.com)", "");
+    const s3AccessKeyId = await ask("Enter S3 Access Key ID", "");
+    const s3SecretAccessKey = await ask("Enter S3 Secret Access Key", "");
+    const s3BucketName = await ask("Enter S3 Bucket Name", "prism-analytics-storage");
+    const s3Region = await ask("Enter S3 Region", "us-east-1");
+
+    if (s3Endpoint && s3AccessKeyId && s3SecretAccessKey && s3BucketName) {
+      info("Storing S3 environment variables and secrets...");
+      const putSecret = (name, value) => {
+        return new Promise((resolve) => {
+          const shell = process.platform === "win32" ? "cmd" : "sh";
+          const args = process.platform === "win32"
+            ? ["/c", `npx wrangler secret put ${name}`]
+            : ["-c", `npx wrangler secret put ${name}`];
+          const child = spawn(shell, args, { cwd: __dirname, stdio: ["pipe", "pipe", "pipe"] });
+          setTimeout(() => { child.stdin.write(value + "\n"); child.stdin.end(); }, 500);
+          child.on("close", (code) => resolve(code === 0));
+        });
+      };
+      
+      await putSecret("S3_ACCESS_KEY_ID", s3AccessKeyId);
+      await putSecret("S3_SECRET_ACCESS_KEY", s3SecretAccessKey);
+      
+      const wranglerPath = path.join(__dirname, "wrangler.toml");
+      let wranglerContent = fs.readFileSync(wranglerPath, "utf8");
+      const s3Vars = `\nS3_ENDPOINT = "${s3Endpoint}"\nS3_BUCKET_NAME = "${s3BucketName}"\nS3_REGION = "${s3Region}"\n`;
+      if (wranglerContent.includes("[vars]")) {
+        wranglerContent = wranglerContent.replace("[vars]", `[vars]${s3Vars}`);
+      } else {
+        wranglerContent += `\n[vars]${s3Vars}`;
+      }
+      fs.writeFileSync(wranglerPath, wranglerContent, "utf8");
+      success("Stored S3 configuration variables in wrangler.toml & wrangler secrets");
+    } else {
+      warn("S3 values cannot be empty. Skipping S3 storage setup.");
+    }
+  }
+
+  step(6, "Creating encrypted JWT signing secret");
   const jwtSecret = crypto.randomBytes(48).toString("hex");
   const secretResult = await pipeSecret(jwtSecret);
   if (secretResult.ok) {
