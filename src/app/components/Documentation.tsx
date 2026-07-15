@@ -80,6 +80,15 @@ export function Documentation() {
               <div className="rounded-xl bg-[color:var(--color-bg-elevated)] p-4 font-mono text-xs text-[color:var(--color-text-muted)] overflow-x-auto">
                 {`// Track user signup\nwindow.prism('user_signup', {\n  plan: 'Pro Plan',\n  marketingSource: 'Newsletter'\n});`}
               </div>
+
+              <h3 className="text-sm font-bold uppercase tracking-wider text-[color:var(--color-brand)] mt-6">3. Verify Your Integration</h3>
+              <p className="text-xs text-[color:var(--color-text-muted)] leading-relaxed">
+                You can easily verify if your tracking scripts are communicating with your deployed Worker. Open the built-in <strong><a href="/playground/" target="_blank" className="text-[color:var(--color-brand)] hover:underline">Integration Playground</a></strong>, enter your Worker URL + Site ID, and click to trigger live pageviews. You will see requests record immediately!
+              </p>
+              
+              <div className="rounded-xl border border-[color:var(--color-border)] p-4 bg-[color:var(--color-bg-elevated)] text-xs text-[color:var(--color-text-muted)]">
+                📖 Source Code: <a href="https://github.com/SudhirDevOps1/PrismAnalytics.git" target="_blank" rel="noopener noreferrer" className="text-[color:var(--color-brand)] hover:underline">https://github.com/SudhirDevOps1/PrismAnalytics.git</a>
+              </div>
             </div>
           )}
 
