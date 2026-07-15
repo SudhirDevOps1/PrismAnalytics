@@ -87,7 +87,7 @@ function Sidebar({ active, setActive, open, setOpen, name, email, liveCount, onL
       {open && <button onClick={() => setOpen(false)} aria-label="Close menu" className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden" />}
       <aside className={`fixed inset-y-0 left-0 z-50 flex w-[240px] flex-col border-r border-[color:var(--color-border)] bg-[color:var(--color-bg-elevated)] p-4 transition-transform lg:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"}`}>
         <div className="flex h-11 items-center gap-2.5 px-2">
-          <span className="relative grid h-8 w-8 place-items-center overflow-hidden rounded-[10px] bg-gradient-to-br from-[#8b6cf5] to-[#ec7d75]">
+          <span className="relative grid h-8 w-8 place-items-center overflow-hidden rounded-[10px] bg-gradient-to-br from-[#8b6cf5] to-[#ec7d75] transition-transform duration-500 hover:rotate-[360deg] cursor-pointer">
             <PrismLogo className="h-4 w-4 text-white" />
           </span>
           <span className="text-[15px] font-semibold tracking-[-.02em]">

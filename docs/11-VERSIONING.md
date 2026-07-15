@@ -10,7 +10,25 @@ Semantic Versioning: `MAJOR.MINOR.PATCH`
 
 Version source of truth: `src/lib/version.ts` + `package.json` must match.
 
-## Current Version — v1.0.0 First Light (2026-07-10)
+## Current Version — v1.1.0 Prism Refraction (2026-07-15)
+
+### Added
+
+- Beautiful 3D SVG PrismLogo branding & high-resolution square PNG assets (`public/logo.png`, `public/icon.png`)
+- Local interactive quickstart, integration, and storage Documentation dashboard page
+- Standalone HTML testing & integration playground (`playground/index.html` & `/playground/`) to easily trigger hits
+- Live D1 connection status & connected S3/R2 storage indicator in Settings panel
+- Vertically scrollable sidebar layout to prevent clipping logout/username controls on small screens
+- Responsive wrapping for Edit/Delete buttons and Site Settings panels preventing horizontal overflow
+- Public Live stats animated counter embed widget framework tab and CORS widget API endpoints
+
+### Fixed
+
+- Lazy-loaded PostgreSQL pool connection during Next.js server build compile-time to prevent build failures
+- Shifted framework args parameters bug in `snippetMap` causing identical tracking snippets
+- Worker static assets immutable header modifier crashes on workers static files routing
+
+## Previous Version — v1.0.0 First Light (2026-07-10)
 
 ### Added
 

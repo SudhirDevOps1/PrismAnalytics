@@ -67,7 +67,7 @@ export function Login({ onLogin, onSignup }: Props) {
           <div className="absolute -right-24 -top-24 h-80 w-80 rounded-full bg-[#8d6cff]/25 blur-[100px]" />
           <div className="absolute -bottom-28 -left-12 h-80 w-80 rounded-full bg-[#ec7a70]/15 blur-[100px]" />
           <div className="relative flex items-center gap-2.5 text-lg font-semibold">
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#9d7dff] to-[#ef7d73] shadow-lg">
+            <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#9d7dff] to-[#ef7d73] shadow-lg transition-transform duration-500 hover:rotate-[360deg] cursor-pointer">
               <PrismLogo className="h-4.5 w-4.5 text-white" />
             </span>
             PrismAnalytics
@@ -99,7 +99,7 @@ export function Login({ onLogin, onSignup }: Props) {
         <section className="flex items-center justify-center p-6 sm:p-10">
           <div className="w-full max-w-[400px]">
             <div className="mb-8 flex items-center gap-2 text-base font-semibold lg:hidden">
-              <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-[#8b6cf5] to-[#ec7d75] text-white">
+              <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-[#8b6cf5] to-[#ec7d75] text-white transition-transform duration-500 hover:rotate-[360deg] cursor-pointer">
                 <PrismLogo className="h-4 w-4 text-white" />
               </span>
               PrismAnalytics
