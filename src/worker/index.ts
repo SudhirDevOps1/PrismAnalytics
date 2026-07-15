@@ -11,8 +11,10 @@ import track from "./routes/track";
 const app = new Hono<AppEnv>();
 
 app.use("*", secureHeaders());
-app.use("/api/*", async (c, next) => {
-  await ensureD1Schema(c.env.DB);
+app.use("*", async (c, next) => {
+  if (c.env.DB) {
+    await ensureD1Schema(c.env.DB);
+  }
   await next();
 });
 app.use("/api/track", cors({
