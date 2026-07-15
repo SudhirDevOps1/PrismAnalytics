@@ -460,11 +460,21 @@ function widgetSnippet(trackingCode: string, workerUrl: string): string {
 }
 
 const snippetMap: Record<FrameworkId, (code: string, url: string) => string> = {
-  html: snippetFor, react: snippetFor, nextjs: snippetFor, vue: snippetFor,
-  nuxt: snippetFor, angular: snippetFor, svelte: snippetFor, gtm: snippetFor,
-  wordpress: snippetFor, shopify: snippetFor, webflow: snippetFor, bootstrap: snippetFor, wix: snippetFor,
+  html: (c, u) => snippetFor("html", c, u),
+  react: (c, u) => snippetFor("react", c, u),
+  nextjs: (c, u) => snippetFor("nextjs", c, u),
+  vue: (c, u) => snippetFor("vue", c, u),
+  nuxt: (c, u) => snippetFor("nuxt", c, u),
+  angular: (c, u) => snippetFor("angular", c, u),
+  svelte: (c, u) => snippetFor("svelte", c, u),
+  gtm: (c, u) => snippetFor("gtm", c, u),
+  wordpress: (c, u) => snippetFor("wordpress", c, u),
+  shopify: (c, u) => snippetFor("shopify", c, u),
+  webflow: (c, u) => snippetFor("webflow", c, u),
+  bootstrap: (c, u) => snippetFor("bootstrap", c, u),
+  wix: (c, u) => snippetFor("wix", c, u),
   widget: widgetSnippet,
-} as Record<FrameworkId, (code: string, url: string) => string>;
+};
 
 const LANGUAGES: Record<FrameworkId, string> = {
   html: "html", react: "tsx", nextjs: "tsx", vue: "typescript",
