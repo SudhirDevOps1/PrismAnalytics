@@ -1,7 +1,7 @@
 # 📚 PrismAnalytics Documentation Hub
 
-> **Version:** 1.0.0 — *First Light*
-> **Last Updated:** 2026-07-10
+> **Version:** 1.1.0 — *Prism Refraction*
+> **Last Updated:** 2026-07-15
 
 Welcome to the complete PrismAnalytics docs. This hub links to every guide, policy, and integration.
 

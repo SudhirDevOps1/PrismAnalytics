@@ -3,7 +3,7 @@
 ## Local (Next.js preview — no Cloudflare account needed)
 
 ```bash
-git clone https://github.com/yourusername/prism-analytics.git
+git clone https://github.com/SudhirDevOps1/PrismAnalytics.git
 cd prism-analytics
 cp .env.example .env
 # Edit .env: DATABASE_URL + JWT_SECRET (min 32 chars)
