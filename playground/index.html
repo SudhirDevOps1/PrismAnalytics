@@ -47,6 +47,22 @@
       pointer-events: none;
       z-index: 1;
     }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 24px;
+      transition: color 0.2s ease;
+    }
+    .back-btn:hover {
+      color: var(--brand);
+    }
     .header {
       text-align: center;
       margin-bottom: 28px;
@@ -78,7 +94,7 @@
       line-height: 1.5;
     }
     .input-group {
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
     label {
       display: block;
@@ -104,6 +120,13 @@
     input:focus {
       border-color: var(--brand);
       box-shadow: 0 0 0 3px var(--brand-glow);
+    }
+    .input-hint {
+      display: block;
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 6px;
+      line-height: 1.4;
     }
     .actions {
       display: grid;
@@ -166,12 +189,17 @@
     .log-msg.success {
       color: var(--success);
     }
+    .log-msg.error {
+      color: #ef4444;
+    }
   </style>
 </head>
 <body>
 
   <div class="container">
     <div class="glow"></div>
+    <a href="/" class="back-btn">← Back to Dashboard</a>
+    
     <div class="header">
       <div class="logo">PA</div>
       <h1>PrismAnalytics Playground</h1>
@@ -181,11 +209,13 @@
     <div class="input-group">
       <label for="workerUrl">Worker Endpoint URL</label>
       <input type="url" id="workerUrl" placeholder="https://prismanalytics.username.workers.dev" value="">
+      <span class="input-hint">ℹ️ <strong>Where to find:</strong> The URL of your deployed Cloudflare worker (e.g. <code>https://prismanalytics.sudhirdevops1.workers.dev</code>).</span>
     </div>
 
     <div class="input-group">
       <label for="siteId">Tracking Code (Site ID)</label>
       <input type="text" id="siteId" placeholder="pa_xxxxxxxxx" value="">
+      <span class="input-hint">ℹ️ <strong>Where to find:</strong> Copy the unique ID from your <strong>Sites</strong> dashboard tab (e.g. <code>pa_a855e546a1c7483dbf30</code>).</span>
     </div>
 
     <div class="actions">
