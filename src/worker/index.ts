@@ -47,7 +47,7 @@ app.notFound(async (c) => {
 
 app.onError((error, c) => {
   console.error("PrismAnalytics worker error", error.message);
-  return c.json({ error: "Unexpected server error" }, 500);
+  return c.json({ error: "Unexpected server error", message: error.message, stack: error.stack }, 500);
 });
 
 export default app;
