@@ -100,6 +100,24 @@ Ensure `migrations/0001_initial.sql` is valid SQLite. Run locally first: `npx wr
 
 Check `npx wrangler tail` logs. Common: missing env var, D1 binding.
 
+### `TypeError: Can't modify immutable headers` (Hono Worker crash)
+
+- **Issue**: The Hono `secureHeaders` middleware crashes when serving static assets on Cloudflare Workers/Pages. The response headers from `env.ASSETS.fetch` are immutable.
+- **Fix**: Apply the `secureHeaders()` middleware to `/api/*` routes only, or disable it globally. We have removed it globally to prevent this crash.
+
+### `npm error ERESOLVE` / peer dependency conflicts
+
+- **Issue**: Conflict between `@cloudflare/workers-types` and `wrangler` during package installation on Cloudflare Pages.
+- **Fix**: The `@cloudflare/workers-types` package has been updated to `^5.20260711.1` in `package.json` to match wrangler requirements, resolving dependency tree conflicts natively without `--legacy-peer-deps`.
+
+### `fatal: unable to access ... SSL routines::ssl/tls alert bad record mac` (Git Push)
+
+- **Issue**: Git Windows client OpenSSL backend network compatibility error.
+- **Fix**: Switch the Git global SSL backend to Schannel (native Windows library):
+  ```bash
+  git config --global http.sslBackend schannel
+  ```
+
 ---
 
 ## Database

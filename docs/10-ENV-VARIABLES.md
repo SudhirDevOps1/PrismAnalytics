@@ -20,9 +20,15 @@ Wrangler 4 automatically provisions the D1 database because `wrangler.toml` cont
 | `APP_URL` | Optional | Worker | Exact production origin for dashboard API CORS. Empty means reflect the requesting dashboard origin; `/api/track` remains public wildcard. |
 | `CLOUDFLARE_API_TOKEN` | CI only | GitHub secret | Least-privilege Workers Edit + D1 Edit token. |
 | `CLOUDFLARE_ACCOUNT_ID` | CI only | GitHub secret | Cloudflare account identifier. |
+| `S3_ENDPOINT` | Optional | Worker | Custom S3-compatible storage endpoint URL (e.g. Backblaze B2, MinIO, Wasabi, AWS S3). |
+| `S3_ACCESS_KEY_ID` | Optional | Worker | Access Key ID for S3 storage bucket. |
+| `S3_SECRET_ACCESS_KEY` | Optional | Worker | Secret Access Key for S3 storage bucket. |
+| `S3_BUCKET_NAME` | Optional | Worker | Target bucket name for exporting archives. |
+| `S3_REGION` | Optional | Worker | Bucket region (defaults to `us-east-1`). |
 
 ## Cloudflare bindings
 
+For core database (D1):
 ```toml
 [[d1_databases]]
 binding = "DB"
@@ -30,7 +36,12 @@ database_name = "prism-analytics-db"
 migrations_dir = "migrations"
 ```
 
-No `database_id` is committed. Wrangler provisions it automatically on deploy. No `[[r2_buckets]]` or `[[kv_namespaces]]` block exists.
+For optional native Cloudflare R2 bucket:
+```toml
+[[r2_buckets]]
+binding = "FILES_BUCKET"
+bucket_name = "prism-analytics-storage"
+```
 
 ## Secret behavior
 
