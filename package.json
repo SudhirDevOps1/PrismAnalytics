@@ -15,7 +15,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && npm run cf:build",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
