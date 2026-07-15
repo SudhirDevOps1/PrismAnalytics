@@ -464,7 +464,7 @@ function LivePreview({ domain }: { domain?: string | null }) {
   }, [active, simulate]);
 
   return (
-    <div className="rounded-2xl border border-[#e4e1dc] bg-white">
+    <div className="rounded-2xl border border-[#e4e1dc] bg-white text-[#343138]">
       <div className="flex items-center justify-between border-b border-[#ece9e4] px-5 py-3">
         <div className="flex items-center gap-2">
           <div className="flex gap-1.5"><i className="h-2.5 w-2.5 rounded-full bg-[#ff7b72]" /><i className="h-2.5 w-2.5 rounded-full bg-[#e9b949]" /><i className="h-2.5 w-2.5 rounded-full bg-[#68c67c]" /></div>
@@ -543,7 +543,7 @@ export function TrackingScript({ trackingCode, domain }: { trackingCode: string;
   const customEventExample = `// Track any custom event after the snippet loads:\nwindow.prism('purchase_completed', {\n  product: 'Pro Plan',\n  value: 99,\n  currency: 'USD'\n});`;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 text-[#343138]">
       {/* Framework tabs */}
       <div className="overflow-hidden rounded-2xl border border-[#e4e1dc] bg-white">
         <div className="relative">
@@ -555,7 +555,7 @@ export function TrackingScript({ trackingCode, domain }: { trackingCode: string;
                   <button 
                     key={f.id} 
                     onClick={() => setActiveFramework(f.id as FrameworkId)} 
-                    className={`flex shrink-0 items-center gap-1.5 rounded-t-xl px-3 py-2.5 text-xs font-medium transition whitespace-nowrap ${activeFramework === f.id ? "bg-white border border-[#e4e1dc] border-b-white -mb-px text-[#7356df]" : "text-[#8a8693] hover:text-[#5a5660] hover:bg-white/50"}`}
+                    className={`flex shrink-0 items-center gap-1.5 rounded-t-xl px-3 py-2.5 text-xs font-medium transition whitespace-nowrap ${activeFramework === f.id ? "bg-white border border-[#e4e1dc] border-b-white -mb-px text-[#7356df]" : "text-[#524e59] hover:text-[#1c1a21] hover:bg-white/50"}`}
                   >
                     <Icon size={13} />
                     <span>{f.label}</span>

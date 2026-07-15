@@ -132,7 +132,7 @@ function Sidebar({ active, setActive, open, setOpen, name, email, liveCount, onL
               <strong className="block truncate text-xs font-semibold">{name}</strong>
               <small className="block truncate text-[10px] text-[color:var(--color-text-muted)]">{email}</small>
             </span>
-            <button onClick={onLogout} title="Sign out" aria-label="Sign out" className="text-[color:var(--color-text-muted)] hover:text-[color:var(--color-danger)]">
+            <button onClick={onLogout} title="Sign out" aria-label="Sign out" className="shrink-0 text-[color:var(--color-text-muted)] hover:text-[color:var(--color-danger)]">
               <LogOut size={16} />
             </button>
           </div>
