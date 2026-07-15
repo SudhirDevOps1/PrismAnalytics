@@ -14,6 +14,7 @@ import { useAuth } from "../hooks/useAuth";
 import { Login } from "./Login";
 import { SiteSettings } from "./SiteSettings";
 import { WorldMap } from "./WorldMap";
+import { Documentation } from "./Documentation";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Modal } from "./ui/modal";
@@ -103,16 +104,17 @@ function Sidebar({ active, setActive, open, setOpen, name, email, liveCount, onL
         <p className="mb-2 mt-7 px-3 text-[10px] font-semibold uppercase tracking-[.14em] text-[color:var(--color-text-dim)]">Manage</p>
         <nav className="space-y-1">
           {manageNav.map((n) => button(n))}
-          <a
-            href="https://github.com/yourusername/prism-analytics#readme"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex h-10 w-full items-center gap-3 rounded-xl px-3 text-[13px] font-medium text-[color:var(--color-text-muted)] transition hover:bg-[color:var(--color-bg-hover)] hover:text-[color:var(--color-text)]"
+          <button
+            onClick={() => { setActive("docs"); setOpen(false); }}
+            className={`group flex h-10 w-full items-center gap-3 rounded-xl px-3 text-[13px] font-medium transition ${
+              active === "docs"
+                ? "bg-[color:var(--color-brand-glow)] text-[color:var(--color-brand)]"
+                : "text-[color:var(--color-text-muted)] hover:bg-[color:var(--color-bg-hover)] hover:text-[color:var(--color-text)]"
+            }`}
           >
             <BookOpen size={17} />
             <span className="flex-1 text-left">Documentation</span>
-            <ExternalLink size={11} />
-          </a>
+          </button>
         </nav>
 
         <div className="mt-auto">
@@ -582,6 +584,8 @@ function DashboardInner() {
           <SiteSettings sites={sites} onAdd={auth.addSite} onUpdate={auth.updateSite} onDelete={auth.deleteSite} />
         ) : active === "settings" ? (
           <PrivacySettings onDeleteAccount={auth.deleteAccount} />
+        ) : active === "docs" ? (
+          <Documentation />
         ) : (
           <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
             {/* Header row */}

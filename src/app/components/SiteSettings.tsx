@@ -133,7 +133,7 @@ export function SiteSettings({ sites, onAdd, onUpdate, onDelete }: Props) {
         <section className="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-bg-card)] p-5">
           {activeSite ? (
             <>
-              <div className="flex flex-wrap items-start justify-between gap-3">
+              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                 <div className="min-w-0">
                   <h2 className="truncate text-lg font-semibold">{activeSite.name}</h2>
                   {activeSite.domain && (

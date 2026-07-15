@@ -99,6 +99,13 @@ const FRAMEWORKS = [
     desc: "Wix website",
     install: "Add via Wix > Settings > Tracking Tools > New Tool > Custom > paste in site <head>.",
   },
+  {
+    id: "widget",
+    label: "Embed Live Widget",
+    icon: Eye,
+    desc: "Preset public live stats widget",
+    install: "Copy and paste this HTML/JS code into any web page where you want to show animated live audience statistics.",
+  },
 ] as const;
 
 type FrameworkId = (typeof FRAMEWORKS)[number]["id"];
@@ -404,16 +411,66 @@ function snippetFor(id: FrameworkId, code: string, url: string): string {
   ].join("\n");
 }
 
+function widgetSnippet(trackingCode: string, workerUrl: string): string {
+  return [
+    `<!-- PrismAnalytics Embeddable Live Widget -->`,
+    `<div id="prism-analytics-widget" data-site="${trackingCode}" style="max-width: 320px; min-width: 250px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0c0a12; color: #f4f3f6; border-radius: 16px; padding: 18px; border: 1px solid rgba(139, 108, 245, 0.25); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.6); position: relative; overflow: hidden;">`,
+    `  <div style="position: absolute; inset: 0; background: radial-gradient(circle at top right, rgba(139, 108, 245, 0.12), transparent 70%); pointer-events: none;"></div>`,
+    `  <div style="display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 2;">`,
+    `    <div style="display: flex; align-items: center; gap: 8px;">`,
+    `      <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 12px #10b981; animation: prismPulse 1.8s infinite ease-in-out;"></span>`,
+    `      <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #10b981; font-family: monospace;">Live Visitors</span>`,
+    `    </div>`,
+    `    <div style="font-size: 10px; color: #787582; font-weight: 500;">PrismAnalytics</div>`,
+    `  </div>`,
+    `  <div style="margin-top: 14px; display: flex; align-items: baseline; gap: 8px; position: relative; z-index: 2;">`,
+    `    <div id="prism-widget-count" style="font-size: 38px; font-weight: 800; color: #ffffff; line-height: 1;">0</div>`,
+    `    <div style="font-size: 12px; color: #a39fae; font-weight: 500;">active right now</div>`,
+    `  </div>`,
+    `  <div style="margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 10px; display: flex; justify-content: space-between; font-size: 10px; color: #787582; position: relative; z-index: 2;">`,
+    `    <div>Total Pageviews: <span id="prism-widget-total" style="color: #c9c7d0; font-weight: 600;">0</span></div>`,
+    `    <div style="color: rgba(139, 108, 245, 0.85); font-weight: 600;">🛡️ Cookie-Free</div>`,
+    `  </div>`,
+    `</div>`,
+    `<style>`,
+    `@keyframes prismPulse {`,
+    `  0% { transform: scale(0.9); opacity: 0.6; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }`,
+    `  50% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }`,
+    `  100% { transform: scale(0.9); opacity: 0.6; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }`,
+    `}`,
+    `</style>`,
+    `<script>`,
+    `(function() {`,
+    `  const url = '${workerUrl}/api/widget?siteId=${trackingCode}';`,
+    `  function update() {`,
+    `    fetch(url)`,
+    `      .then(res => res.json())`,
+    `      .then(data => {`,
+    `        const countEl = document.getElementById('prism-widget-count');`,
+    `        const totalEl = document.getElementById('prism-widget-total');`,
+    `        if (countEl) countEl.textContent = Number(data.liveCount).toLocaleString();`,
+    `        if (totalEl) totalEl.textContent = Number(data.totalViews).toLocaleString();`,
+    `      }).catch(err => console.error('Prism widget error:', err));`,
+    `  }`,
+    `  setInterval(update, 8000);`,
+    `  update();`,
+    `})();`,
+    `</script>`
+  ].join("\n");
+}
+
 const snippetMap: Record<FrameworkId, (code: string, url: string) => string> = {
   html: snippetFor, react: snippetFor, nextjs: snippetFor, vue: snippetFor,
   nuxt: snippetFor, angular: snippetFor, svelte: snippetFor, gtm: snippetFor,
   wordpress: snippetFor, shopify: snippetFor, webflow: snippetFor, bootstrap: snippetFor, wix: snippetFor,
+  widget: widgetSnippet,
 } as Record<FrameworkId, (code: string, url: string) => string>;
 
 const LANGUAGES: Record<FrameworkId, string> = {
   html: "html", react: "tsx", nextjs: "tsx", vue: "typescript",
   nuxt: "typescript", angular: "typescript", svelte: "typescript",
   gtm: "html", wordpress: "php", shopify: "html", webflow: "html", bootstrap: "html", wix: "html",
+  widget: "html",
 };
 
 function SyntaxLine({ line, num }: { line: string; num: number }) {
@@ -481,7 +538,7 @@ function LivePreview({ domain }: { domain?: string | null }) {
         </div>
       </div>
 
-      <div className="relative bg-[#f7f5f1] p-5 font-sans">
+      <div className="relative bg-[#f5f3ef] border-t border-[#ece9e4] p-5 font-sans">
         {/* Simulated browser chrome */}
         <div className="mb-4 overflow-hidden rounded-xl border border-[#e0dcd5] bg-white shadow-sm">
           <div className="flex items-center gap-2 border-b border-[#f0ede8] px-4 py-2.5">

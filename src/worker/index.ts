@@ -23,11 +23,38 @@ app.use("/api/track", cors({
   maxAge: 86400,
 }));
 app.use("/api/*", cors({
-  origin: (origin, c) => c.req.path === "/api/track" ? "*" : (c.env.APP_URL || origin),
+  origin: (origin, c) => ["/api/track", "/api/widget"].includes(c.req.path) ? "*" : (c.env.APP_URL || origin),
   allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowHeaders: ["Content-Type", "Authorization"],
   maxAge: 86400,
 }));
+
+app.get("/api/widget", async (c) => {
+  const siteId = c.req.query("siteId");
+  if (!siteId) return c.json({ error: "siteId required" }, 400);
+
+  const site = await c.env.DB.prepare(
+    "SELECT id, name, domain FROM sites WHERE id = ? OR tracking_code = ? LIMIT 1"
+  ).bind(siteId, siteId).first<{ id: string; name: string; domain: string }>();
+
+  if (!site) return c.json({ error: "Site not found" }, 404);
+
+  const fiveMinAgo = Date.now() - 5 * 60 * 1000;
+  const live = await c.env.DB.prepare(
+    "SELECT COUNT(DISTINCT user_hash) AS count FROM pageviews WHERE site_id = ? AND timestamp >= ?"
+  ).bind(site.id, fiveMinAgo).first<{ count: number }>();
+
+  const total = await c.env.DB.prepare(
+    "SELECT COUNT(*) AS count FROM pageviews WHERE site_id = ?"
+  ).bind(site.id).first<{ count: number }>();
+
+  return c.json({
+    siteName: site.name,
+    domain: site.domain,
+    liveCount: live?.count ?? 0,
+    totalViews: total?.count ?? 0
+  });
+});
 
 app.get("/api/health", (c) => c.json({
   ok: true,
