@@ -10,7 +10,6 @@ import track from "./routes/track";
 
 const app = new Hono<AppEnv>();
 
-app.use("/api/*", secureHeaders());
 app.use("*", async (c, next) => {
   if (c.env.DB) {
     await ensureD1Schema(c.env.DB);
