@@ -490,7 +490,7 @@ function SyntaxLine({ line, num }: { line: string; num: number }) {
   return (
     <div className="group relative flex hover:bg-[#ffffff08]">
       <span className="w-10 shrink-0 select-none pr-3 text-right text-[#4e4858] opacity-40 group-hover:opacity-70">{num}</span>
-      <span className={`flex-1 whitespace-pre-wrap break-words ${isComment ? "text-[#6a6577] italic" : isKeyword ? "text-[#c792ea]" : isString ? "text-[#c3e88d]" : "text-[#9592a3]"}`}>{line}</span>
+      <span className={`flex-1 min-w-0 whitespace-pre-wrap break-words ${isComment ? "text-[#6a6577] italic" : isKeyword ? "text-[#c792ea]" : isString ? "text-[#c3e88d]" : "text-[#9592a3]"}`}>{line}</span>
     </div>
   );
 }
@@ -650,8 +650,8 @@ export function TrackingScript({ trackingCode, domain }: { trackingCode: string;
         <div className="relative bg-[#1e1c24]">
           <div className="flex items-center justify-between border-b border-white/5 px-4 py-2.5">
             <span className="rounded border border-[#38343f] bg-[#2d2a38] px-2 py-0.5 font-mono text-[10px] text-[#8a84a3]">{LANGUAGES[activeFramework]}</span>
-            <button onClick={() => copy(snippet, "main")} className="flex items-center gap-1.5 rounded-lg bg-[#2d2a38] px-3 py-1.5 text-[11px] font-medium text-[#c9c3e0] hover:bg-[#38343f] transition">
-              {copiedId === "main" ? <><Check size={12} className="text-[#68c67c]" />Copied!</> : <><Clipboard size={12} />Copy code</>}
+            <button onClick={() => copy(snippet, "main")} className="flex items-center gap-1.5 rounded-lg bg-[color:var(--color-brand)] hover:bg-[color:var(--color-brand-hover)] px-3 py-1.5 text-[11px] font-semibold text-white shadow-sm transition">
+              {copiedId === "main" ? <><Check size={12} className="text-white" />Copied!</> : <><Clipboard size={12} />Copy code</>}
             </button>
           </div>
           <div className="max-h-80 overflow-auto p-4">
@@ -668,8 +668,8 @@ export function TrackingScript({ trackingCode, domain }: { trackingCode: string;
         </div>
         <div className="relative bg-[#1e1c24]">
           <div className="flex items-center justify-end border-b border-white/5 px-4 py-2.5">
-            <button onClick={() => copy(customEventExample, "custom")} className="flex items-center gap-1.5 rounded-lg bg-[#2d2a38] px-3 py-1.5 text-[11px] font-medium text-[#c9c3e0] hover:bg-[#38343f] transition">
-              {copiedId === "custom" ? <><Check size={12} className="text-[#68c67c]" />Copied!</> : <><Clipboard size={12} />Copy example</>}
+            <button onClick={() => copy(customEventExample, "custom")} className="flex items-center gap-1.5 rounded-lg bg-[color:var(--color-brand)] hover:bg-[color:var(--color-brand-hover)] px-3 py-1.5 text-[11px] font-semibold text-white shadow-sm transition">
+              {copiedId === "custom" ? <><Check size={12} className="text-white" />Copied!</> : <><Clipboard size={12} />Copy example</>}
             </button>
           </div>
           <div className="max-h-48 overflow-auto p-4"><SyntaxHighlight code={customEventExample} /></div>
