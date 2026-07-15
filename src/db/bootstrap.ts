@@ -85,6 +85,9 @@ CREATE INDEX IF NOT EXISTS sessions_token_idx ON sessions(token_hash);
 `;
 
 export async function ensureDatabaseSchema(): Promise<void> {
+  if (!pool) {
+    throw new Error("DATABASE_URL environment variable is required at runtime.");
+  }
   if (!schemaPromise) {
     schemaPromise = pool.query(SCHEMA_SQL).then(() => undefined).catch((error) => {
       schemaPromise = undefined;

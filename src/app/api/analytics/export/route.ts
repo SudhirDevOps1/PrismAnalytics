@@ -46,7 +46,7 @@ export const GET = requireAuth(async (req: NextRequest, user) => {
   const esc = (v: unknown) => `"${String(v ?? "").replace(/"/g, '""')}"`;
   const csv = [
     headerRow.join(","),
-    ...rows.map((r) => [
+    ...rows.map((r: any) => [
       new Date(r.occurredAt).toISOString(), r.pathname, r.referrer, r.country,
       r.deviceType, r.browser, r.os, r.eventName, r.utmSource, r.utmMedium, r.utmCampaign
     ].map(esc).join(","))

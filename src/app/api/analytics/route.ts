@@ -68,7 +68,7 @@ export const GET = requireAuth(async (req: NextRequest, user) => {
 
   const totalViews = totals[0]?.views ?? 0;
   const uniqueVisitors = totals[0]?.unique ?? 0;
-  const bounceSessions = sessionRows.filter((r) => r.views === 1).length;
+  const bounceSessions = sessionRows.filter((r: any) => r.views === 1).length;
   const bounceRate = sessionRows.length ? Math.round((bounceSessions / sessionRows.length) * 1000) / 10 : 0;
 
   const pct = (v: number) => totalViews ? Math.round((v / totalViews) * 100) : 0;
@@ -106,12 +106,12 @@ export const GET = requireAuth(async (req: NextRequest, user) => {
     viewsChange: 0,
     visitorsChange: 0,
     timeline,
-    topPages: pages.map((r) => ({ pathname: r.pathname, views: r.views, percentage: pct(r.views) })),
-    referrers: refs.map((r) => ({ referrer: r.referrer, views: r.views, percentage: pct(r.views) })),
-    countries: countryRows.map((r) => ({ label: r.label || "Unknown", views: r.views, percentage: pct(r.views) })),
-    devices: deviceRows.map((r) => ({ label: r.label || "Unknown", views: r.views, percentage: pct(r.views) })),
-    browsers: browserRows.map((r) => ({ label: r.label || "Unknown", views: r.views, percentage: pct(r.views) })),
-    os: osRows.map((r) => ({ label: r.label || "Unknown", views: r.views, percentage: pct(r.views) })),
+    topPages: pages.map((r: any) => ({ pathname: r.pathname, views: r.views, percentage: pct(r.views) })),
+    referrers: refs.map((r: any) => ({ referrer: r.referrer, views: r.views, percentage: pct(r.views) })),
+    countries: countryRows.map((r: any) => ({ label: r.label || "Unknown", views: r.views, percentage: pct(r.views) })),
+    devices: deviceRows.map((r: any) => ({ label: r.label || "Unknown", views: r.views, percentage: pct(r.views) })),
+    browsers: browserRows.map((r: any) => ({ label: r.label || "Unknown", views: r.views, percentage: pct(r.views) })),
+    os: osRows.map((r: any) => ({ label: r.label || "Unknown", views: r.views, percentage: pct(r.views) })),
     hourlyTraffic,
     recentLogs,
     period: days,
