@@ -51,5 +51,6 @@ desktop.ini
 *.ntvs*
 *.njsproj
 *.sln
-*.sw?
+# local roadmap notes (do not commit to git)
+future_updates.txt
 
