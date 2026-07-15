@@ -222,6 +222,24 @@ No IP, no UA, no cookies, no fingerprint stored.
 
 ---
 
+## ☁️ Cloudflare Free Tier & Storage Options
+
+PrismAnalytics is designed to run **100% free** under the Cloudflare Workers & D1 Database Free Tiers:
+
+* **Free Tier Limits**:
+  - **D1 Database**: 5 Million read rows per day, 100,000 write rows per day, and up to 500MB total SQLite storage.
+  - **Pageviews Tracking**: Practically allows you to track around **100,000 pageviews/events per month** completely free.
+  
+* **Data Retention & Auto-Pruning**:
+  - To remain safely within D1 database free storage limits, historical raw pageview logs are **automatically pruned after 30 days** by default (configurable up to 90 days or 1 year).
+  
+* **Optional S3/R2 Backup (Historical Archiving)**:
+  - Storage configuration is **completely optional**.
+  - If you configure a Cloudflare R2 bucket or S3-compatible service (Backblaze B2, Wasabi, Storj, IDrive e2, MinIO, AWS S3, etc.), you can archive your historical logs permanently past the 30-day D1 limit.
+  - When configured in environment variables, the dashboard settings page will automatically show **Connected** with your storage provider details. If absent, it displays **D1 Only**.
+
+---
+
 ## 📁 Project Structure (as requested)
 
 ```

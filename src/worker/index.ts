@@ -56,13 +56,22 @@ app.get("/api/widget", async (c) => {
   });
 });
 
-app.get("/api/health", (c) => c.json({
-  ok: true,
-  service: "PrismAnalytics",
-  database: "D1 ready",
-  storage: "D1-only free tier",
-  privacy: "strict-hash-default",
-}));
+app.get("/api/health", (c) => {
+  let storageStatus = "D1-only Database";
+  if (c.env.FILES_BUCKET) {
+    storageStatus = "Cloudflare R2 Bucket Connected";
+  } else if (c.env.S3_ENDPOINT) {
+    storageStatus = "Custom S3 Storage Connected";
+  }
+
+  return c.json({
+    ok: true,
+    service: "PrismAnalytics",
+    database: "D1 ready",
+    storage: storageStatus,
+    privacy: "strict-hash-default",
+  });
+});
 app.route("/api", auth);
 app.route("/api", siteRoutes);
 app.route("/api", track);

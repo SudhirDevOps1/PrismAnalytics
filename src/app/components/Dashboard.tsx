@@ -419,7 +419,7 @@ function LivePanel({ live }: { live: { liveVisitors: number; activePages: Array<
   );
 }
 
-function PrivacySettings({ onDeleteAccount }: { onDeleteAccount: () => Promise<void> }) {
+function PrivacySettings({ onDeleteAccount, storageStatus }: { onDeleteAccount: () => Promise<void>; storageStatus: string }) {
   const toast = useToast();
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [dnt, setDnt] = useState(true);
@@ -473,6 +473,25 @@ function PrivacySettings({ onDeleteAccount }: { onDeleteAccount: () => Promise<v
           </CardContent>
         </Card>
 
+        <Card>
+          <CardContent className="flex flex-wrap items-center gap-4">
+            <span className={`grid h-10 w-10 place-items-center rounded-xl ${storageStatus.includes("Connected") ? "bg-[#1a2f22] text-[color:var(--color-success)]" : "bg-[color:var(--color-bg-elevated)] text-[color:var(--color-text-muted)]"}`}>
+              <Database size={18} />
+            </span>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-sm font-semibold">R2/S3 Cloud Storage</h3>
+              <p className="mt-1 text-xs text-[color:var(--color-text-muted)]">
+                {storageStatus.includes("Connected") 
+                  ? `Active connection: ${storageStatus}` 
+                  : "Not configured (Data is stored locally in D1 database only)."}
+              </p>
+            </div>
+            <div className={`rounded-full px-2.5 py-1 text-[10px] font-semibold ${storageStatus.includes("Connected") ? "bg-[#e2f9ec] text-[#1f784c]" : "bg-[color:var(--color-bg-elevated)] text-[color:var(--color-text-muted)]"}`}>
+              {storageStatus.includes("Connected") ? "Connected" : "D1 Only"}
+            </div>
+          </CardContent>
+        </Card>
+
         <Card className="border-[#5a2a2a]">
           <CardContent className="flex flex-wrap items-center gap-4">
             <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#3a1e1e] text-[color:var(--color-danger)]">
@@ -518,6 +537,18 @@ function DashboardInner() {
   const [siteId, setSiteId] = useState<string>("");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [storageStatus, setStorageStatus] = useState("D1-only Database");
+
+  useEffect(() => {
+    if (active === "settings") {
+      fetch("/api/health")
+        .then((r) => r.json())
+        .then((data: any) => {
+          if (data.storage) setStorageStatus(data.storage);
+        })
+        .catch(() => {});
+    }
+  }, [active]);
 
   const sites = useMemo(() => auth.user?.sites || [], [auth.user]);
   const selectedSite = useMemo(() => sites.find((s) => s.id === siteId) || sites[0], [sites, siteId]);
@@ -590,7 +621,7 @@ function DashboardInner() {
         {active === "sites" ? (
           <SiteSettings sites={sites} onAdd={auth.addSite} onUpdate={auth.updateSite} onDelete={auth.deleteSite} />
         ) : active === "settings" ? (
-          <PrivacySettings onDeleteAccount={auth.deleteAccount} />
+          <PrivacySettings onDeleteAccount={auth.deleteAccount} storageStatus={storageStatus} />
         ) : active === "docs" ? (
           <Documentation />
         ) : (
