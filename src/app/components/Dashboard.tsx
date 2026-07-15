@@ -15,6 +15,7 @@ import { Login } from "./Login";
 import { SiteSettings } from "./SiteSettings";
 import { WorldMap } from "./WorldMap";
 import { Documentation } from "./Documentation";
+import { PrismLogo } from "./PrismLogo";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Modal } from "./ui/modal";
@@ -87,7 +88,7 @@ function Sidebar({ active, setActive, open, setOpen, name, email, liveCount, onL
       <aside className={`fixed inset-y-0 left-0 z-50 flex w-[240px] flex-col border-r border-[color:var(--color-border)] bg-[color:var(--color-bg-elevated)] p-4 transition-transform lg:translate-x-0 ${open ? "translate-x-0" : "-translate-x-full"}`}>
         <div className="flex h-11 items-center gap-2.5 px-2">
           <span className="relative grid h-8 w-8 place-items-center overflow-hidden rounded-[10px] bg-gradient-to-br from-[#8b6cf5] to-[#ec7d75]">
-            <BarChart3 size={16} className="text-white" />
+            <PrismLogo className="h-4 w-4 text-white" />
           </span>
           <span className="text-[15px] font-semibold tracking-[-.02em]">
             Prism<span className="text-[color:var(--color-brand)]">Analytics</span>

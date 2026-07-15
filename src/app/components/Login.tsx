@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowRight, BarChart3, Check, Eye, EyeOff, ShieldCheck, Sparkles, Loader2, AlertCircle, Mail } from "lucide-react";
+import { ArrowRight, Check, Eye, EyeOff, ShieldCheck, Sparkles, Loader2, AlertCircle, Mail } from "lucide-react";
+import { PrismLogo } from "./PrismLogo";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { api } from "../lib/api-client";
@@ -67,7 +68,7 @@ export function Login({ onLogin, onSignup }: Props) {
           <div className="absolute -bottom-28 -left-12 h-80 w-80 rounded-full bg-[#ec7a70]/15 blur-[100px]" />
           <div className="relative flex items-center gap-2.5 text-lg font-semibold">
             <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#9d7dff] to-[#ef7d73] shadow-lg">
-              <BarChart3 size={19} />
+              <PrismLogo className="h-4.5 w-4.5 text-white" />
             </span>
             PrismAnalytics
           </div>
@@ -98,7 +99,9 @@ export function Login({ onLogin, onSignup }: Props) {
         <section className="flex items-center justify-center p-6 sm:p-10">
           <div className="w-full max-w-[400px]">
             <div className="mb-8 flex items-center gap-2 text-base font-semibold lg:hidden">
-              <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-[#8b6cf5] to-[#ec7d75] text-white"><BarChart3 size={16} /></span>
+              <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-[#8b6cf5] to-[#ec7d75] text-white">
+                <PrismLogo className="h-4 w-4 text-white" />
+              </span>
               PrismAnalytics
             </div>
             <h2 className="text-3xl font-semibold tracking-[-0.03em]">
