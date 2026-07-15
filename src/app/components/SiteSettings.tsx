@@ -91,7 +91,7 @@ export function SiteSettings({ sites, onAdd, onUpdate, onDelete }: Props) {
         <Button onClick={() => setAddOpen(true)}><Plus size={16} />Add a site</Button>
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-[.85fr_1.15fr]">
+      <div className="grid gap-5 xl:grid-cols-[.80fr_1.20fr]">
         <section className="overflow-hidden rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-bg-card)]">
           <div className="border-b border-[color:var(--color-border)] px-5 py-4">
             <h2 className="text-sm font-semibold">Your sites</h2>
