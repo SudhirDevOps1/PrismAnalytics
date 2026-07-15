@@ -142,6 +142,9 @@ function Sidebar({ active, setActive, open, setOpen, name, email, liveCount, onL
               <LogOut size={16} />
             </button>
           </div>
+          <div className="mt-3 px-2 text-center text-[9px] text-[color:var(--color-text-dim)]">
+            © 2026 PrismAnalytics. Privacy-first tracking.
+          </div>
         </div>
       </aside>
     </>
