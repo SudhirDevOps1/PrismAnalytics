@@ -97,25 +97,29 @@ function Sidebar({ active, setActive, open, setOpen, name, email, liveCount, onL
           </button>
         </div>
 
-        <nav className="mt-7 space-y-1">
-          {primaryNav.map((n) => button({ ...n, badge: n.id === "live" && liveCount > 0 ? String(liveCount) : undefined }))}
-        </nav>
+        <div className="flex-1 overflow-y-auto space-y-6 pr-1 scrollbar-thin mt-6">
+          <nav className="space-y-1">
+            {primaryNav.map((n) => button({ ...n, badge: n.id === "live" && liveCount > 0 ? String(liveCount) : undefined }))}
+          </nav>
 
-        <p className="mb-2 mt-7 px-3 text-[10px] font-semibold uppercase tracking-[.14em] text-[color:var(--color-text-dim)]">Manage</p>
-        <nav className="space-y-1">
-          {manageNav.map((n) => button(n))}
-          <button
-            onClick={() => { setActive("docs"); setOpen(false); }}
-            className={`group flex h-10 w-full items-center gap-3 rounded-xl px-3 text-[13px] font-medium transition ${
-              active === "docs"
-                ? "bg-[color:var(--color-brand-glow)] text-[color:var(--color-brand)]"
-                : "text-[color:var(--color-text-muted)] hover:bg-[color:var(--color-bg-hover)] hover:text-[color:var(--color-text)]"
-            }`}
-          >
-            <BookOpen size={17} />
-            <span className="flex-1 text-left">Documentation</span>
-          </button>
-        </nav>
+          <div>
+            <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[.14em] text-[color:var(--color-text-dim)]">Manage</p>
+            <nav className="space-y-1">
+              {manageNav.map((n) => button(n))}
+              <button
+                onClick={() => { setActive("docs"); setOpen(false); }}
+                className={`group flex h-10 w-full items-center gap-3 rounded-xl px-3 text-[13px] font-medium transition ${
+                  active === "docs"
+                    ? "bg-[color:var(--color-brand-glow)] text-[color:var(--color-brand)]"
+                    : "text-[color:var(--color-text-muted)] hover:bg-[color:var(--color-bg-hover)] hover:text-[color:var(--color-text)]"
+                }`}
+              >
+                <BookOpen size={17} />
+                <span className="flex-1 text-left">Documentation</span>
+              </button>
+            </nav>
+          </div>
+        </div>
 
         <div className="mt-auto">
           <div className="mb-3 rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-bg-card)] p-3">
