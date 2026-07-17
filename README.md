@@ -378,6 +378,25 @@ Changelog & upgrade: [docs/11-VERSIONING.md](./docs/11-VERSIONING.md)
 3. Update `docs/` if you add framework or policy
 4. Add entry to `src/lib/version.ts` CHANGELOG
 
+
+
+---
+
+## 🚀 Future Roadmap & Update Ideas (भविष्य के लिए सुझाव)
+
+जब भी आप आगे कोई नया फीचर जोड़ना चाहें, तो ये **5 कमाल के सुझाव** हैं जिन्हें आप अपने ऐप में बढ़ा सकते हैं:
+
+1. **Email Alerts & Reports (साप्ताहिक ईमेल)**:
+   * क्लाउडफ्लेयर के क्रॉन ट्रिगर (Cron Trigger) का उपयोग करके सीधे यूज़र के ईमेल पर साप्ताहिक ट्रैफिक रिपोर्ट और अचानक आए बड़े ट्रैफिक स्पाइक (Spike Alerts) के ईमेल अलर्ट्स भेजना।
+2. **Shareable Public Dashboards (पब्लिक लिंक)**:
+   * अपने क्लाइंट्स या टीम के साथ किसी साइट के आंकड़े शेयर करने के लिए एक **Read-Only सुरक्षित लिंक** जनरेट करने का फीचर।
+3. **Slack / Discord Webhooks Integration**:
+   * जब भी आपकी साइट पर कोई कस्टम इवेंट फ़ायर हो (जैसे- `purchase_completed`), तो आपके Discord या Slack चैनल पर तुरंत नोटिफिकेशन भेजने का फीचर।
+4. **Regional/City-Level Maps (शहर के अनुसार मैप)**:
+   * अभी मैप में सिर्फ देश (Country) दिखता है, क्लाउडफ़्लेयर के हेडर से सिटी-लेवल डेटा निकालकर सटीक राज्यों और शहरों का डेटा दिखाना।
+5. **Click Heatmaps (क्लिक हीटमैप)**:
+   * पेज पर यूज़र कहाँ-कहाँ क्लिक कर रहे हैं, उसका एक विज़ुअल नक्शा (anonymized heatmaps) तैयार करना जो पूरी तरह से कुकी-फ़्री हो।
+
 ---
 
 ## 📜 License
