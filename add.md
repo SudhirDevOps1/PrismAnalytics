@@ -10,22 +10,22 @@ Here is how a tracking request is generated, validated by the browser, filtered 
 
 ```mermaid
 graph TD
-    A[User Visits Website] --> B{Do Not Track (DNT) Enabled?}
-    B -- Yes --> C[Ignore event - Exit]
-    B -- No --> D{Is User-Agent a Bot?}
+    A["User Visits Website"] --> B{"Do Not Track (DNT) Enabled?"}
+    B -- Yes --> C["Ignore event - Exit"]
+    B -- No --> D{"Is User-Agent a Bot?"}
     
-    D -- Yes --> E[Ignore event - Return status: ignored]
-    D -- No --> F{Browser Content Security Policy CSP Checks}
+    D -- Yes --> E["Ignore event - Return status: ignored"]
+    D -- No --> F{"Browser Content Security Policy (CSP) Checks"}
     
-    F -- connect-src restricts domain --> G[Browser blocks request - CSP Error]
-    F -- connect-src allows worker domain --> H[Queue request via navigator.sendBeacon]
+    F -- "connect-src restricts domain" --> G["Browser blocks request - CSP Error"]
+    F -- "connect-src allows worker domain" --> H["Queue request via navigator.sendBeacon"]
     
-    H --> I[Cloudflare Worker Endpoint /api/track]
-    I --> J{Valid Site ID in DB?}
-    J -- No --> K[Return 404 invalid_site]
-    J -- Yes --> L[Parse GeoIP & Hash IP/UA]
-    L --> M[Write to Cloudflare D1 Drizzle DB]
-    M --> N[30-Day Auto Data Cleanup Cron Trigger]
+    H --> I["Cloudflare Worker Endpoint /api/track"]
+    I --> J{"Valid Site ID in DB?"}
+    J -- No --> K["Return 404 invalid_site"]
+    J -- Yes --> L["Parse GeoIP & Hash IP/UA"]
+    L --> M["Write to Cloudflare D1 Drizzle DB"]
+    M --> N["30-Day Auto Data Cleanup Cron Trigger"]
 ```
 
 ---
