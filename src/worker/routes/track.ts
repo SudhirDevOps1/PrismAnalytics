@@ -9,14 +9,14 @@ import { eq } from "drizzle-orm";
 const payloadSchema = z.object({
   site_id: z.string().min(3).max(100),
   pathname: z.string().min(1).max(2048),
-  referrer: z.string().max(2048).optional().default(""),
-  screen_size: z.string().max(32).optional(),
-  session_id: z.string().max(100).optional(),
+  referrer: z.string().max(2048).nullable().optional().default(""),
+  screen_size: z.string().max(32).nullable().optional(),
+  session_id: z.string().max(100).nullable().optional(),
   event_name: z.string().regex(/^[a-zA-Z0-9_.:-]+$/).max(64).optional().default("pageview"),
-  event_data: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])).optional(),
-  utm_source: z.string().max(255).optional(),
-  utm_medium: z.string().max(255).optional(),
-  utm_campaign: z.string().max(255).optional(),
+  event_data: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])).nullable().optional(),
+  utm_source: z.string().max(255).nullable().optional(),
+  utm_medium: z.string().max(255).nullable().optional(),
+  utm_campaign: z.string().max(255).nullable().optional(),
 });
 
 const pixel = Uint8Array.from([
