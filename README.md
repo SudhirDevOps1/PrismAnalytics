@@ -322,13 +322,49 @@ See [docs/VISUAL-GUIDE.md](./docs/VISUAL-GUIDE.md) — every customization with 
 
 ---
 
+## 📊 Event Lifecycle & Content Security Policy (CSP)
+
+Here is how tracking events are validated by the browser, filtered by the edge worker, and saved to the database:
+
+```mermaid
+graph TD
+    A["User Visits Website"] --> B{"Do Not Track (DNT) Enabled?"}
+    B -- Yes --> C["Ignore event - Exit"]
+    B -- No --> D{"Is User-Agent a Bot?"}
+    
+    D -- Yes --> E["Ignore event - Return status: ignored"]
+    D -- No --> F{"Browser Content Security Policy (CSP) Checks"}
+    
+    F -- "connect-src restricts domain" --> G["Browser blocks request - CSP Error"]
+    F -- "connect-src allows worker domain" --> H["Queue request via navigator.sendBeacon"]
+    
+    H --> I["Cloudflare Worker Endpoint /api/track"]
+    I --> J{"Valid Site ID in DB?"}
+    J -- No --> K["Return 404 invalid_site"]
+    J -- Yes --> L["Parse GeoIP & Hash IP/UA"]
+    L --> M["Write to Cloudflare D1 Drizzle DB"]
+    M --> N["30-Day Auto Data Cleanup Cron Trigger"]
+```
+
+### Allowing CORS & CSP in Web Applications
+
+To prevent the browser from blocking requests (like `Refused to connect because it violates the Content Security Policy`), the website hosting the tracking snippet **must** allow the worker domain in its CSP header configuration:
+
+```http
+Content-Security-Policy: connect-src 'self' ws: wss: https://prismanalytics.sudhirdevops1.workers.dev;
+```
+
+Our Cloudflare Worker contains a built-in CORS middleware that automatically handles and permits cross-origin `OPTIONS` and `POST` requests.
+
+---
+
 ## 🌍 Version
 
-**v1.0.0** First Light — 2026-07-10 — stable channel
+**v1.1.0** Prism Refraction — 2026-07-15 — stable channel
 
 ```bash
 curl http://localhost:3000/api/version
-# {"version":"1.0.0","name":"First Light","buildDate":"2026-07-10","changelog":[...]}
+# {"version":"1.1.0","name":"Prism Refraction","buildDate":"2026-07-15","changelog":[...]}
 ```
 
 Changelog & upgrade: [docs/11-VERSIONING.md](./docs/11-VERSIONING.md)
