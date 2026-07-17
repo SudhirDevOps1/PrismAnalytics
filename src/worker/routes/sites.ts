@@ -7,12 +7,12 @@ import { requireAuth } from "../utils/auth";
 
 const siteInput = z.object({
   name: z.string().trim().min(2).max(80),
-  domain: z.string().trim().max(255).optional(),
+  domain: z.string().trim().max(255).nullable().optional(),
 });
 
 const siteUpdateInput = z.object({
   name: z.string().trim().min(2).max(80).optional(),
-  domain: z.string().trim().max(255).optional(),
+  domain: z.string().trim().max(255).nullable().optional(),
   ipPrivacyMode: z.enum(["strict_hash", "store_raw"]).optional(),
 });
 
