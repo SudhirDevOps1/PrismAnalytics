@@ -505,6 +505,7 @@ function SyntaxHighlight({ code }: { code: string }) {
 }
 
 function LivePreview({ domain }: { domain?: string | null }) {
+  const workerUrl = typeof window === "undefined" ? "https://your-worker.workers.dev" : window.location.origin;
   const [active, setActive] = useState(false);
   const [views, setViews] = useState(0);
   const [events, setEvents] = useState<Array<{ page: string; referrer: string; time: string }>>([]);
@@ -586,8 +587,9 @@ function LivePreview({ domain }: { domain?: string | null }) {
         </div>}
       </div>
 
-      <div className="border-t border-[#ece9e4] px-5 py-3">
+      <div className="border-t border-[#ece9e4] px-5 py-3 space-y-1.5">
         <p className="text-[10px] text-[#8a8693]">⚡ Events fire via <code className="rounded bg-[#f0ede8] px-1 font-mono">navigator.sendBeacon</code> — no page reload needed, survives tab close.</p>
+        <p className="text-[10px] text-[#b36b00] dark:text-[#d97706] bg-[#fffcf0] dark:bg-[#78350f]/10 border border-[#ffeeba] dark:border-[#78350f]/20 rounded-lg p-2">🔒 <strong>Content Security Policy (CSP):</strong> If your site uses strict CSP headers, you must add <code className="rounded bg-black/5 px-1 font-mono">{workerUrl}</code> to your <code className="rounded bg-black/5 px-1 font-mono">connect-src</code> directive to allow event tracking and live widget requests.</p>
       </div>
     </div>
   );
