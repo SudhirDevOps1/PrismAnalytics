@@ -103,6 +103,41 @@ async function main() {
   success("Production assets built in dist/");
 
   step(3, "Deploying Worker and auto-provisioning free D1 database");
+  info("Checking/Creating D1 database...");
+  const d1Create = capture("npx wrangler d1 create prism-analytics-db");
+  let dbId = "";
+  if (d1Create.ok) {
+    const match = d1Create.output.match(/database_id\s*=\s*"([^"]+)"/);
+    if (match) {
+      dbId = match[1];
+      success(`D1 database created successfully with ID: ${dbId}`);
+    }
+  } else {
+    const d1List = capture("npx wrangler d1 list");
+    if (d1List.ok) {
+      const listMatch = d1List.output.match(/prism-analytics-db\s+([a-f0-9-]+)/);
+      if (listMatch) {
+        dbId = listMatch[1];
+        success(`D1 database "prism-analytics-db" already exists with ID: ${dbId}`);
+      }
+    }
+  }
+
+  if (dbId) {
+    const file = path.join(__dirname, "wrangler.toml");
+    let source = fs.readFileSync(file, "utf8");
+    if (!source.includes("database_id")) {
+      source = source.replace(
+        /database_name\s*=\s*"prism-analytics-db"/,
+        `database_name = "prism-analytics-db"\ndatabase_id = "${dbId}"`
+      );
+      fs.writeFileSync(file, source, "utf8");
+      success("Updated wrangler.toml with database_id");
+    }
+  } else {
+    warn("Could not retrieve D1 database_id. Make sure to update wrangler.toml manually.");
+  }
+
   const deploy = capture("npx wrangler deploy");
   log(deploy.output);
   if (!deploy.ok) {
