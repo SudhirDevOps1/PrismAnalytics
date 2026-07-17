@@ -1,4 +1,4 @@
-# 🔒 PrismAnalytics integration & Security Guide (add.md)
+# 🔒 PrismAnalytics Integration & Security Guide (easy_deploy.md)
 
 This document provides a detailed breakdown of browser-side security restrictions, Content Security Policy (CSP) rules, and system limitations.
 
@@ -96,3 +96,73 @@ export function useAnalytics(siteId, workerUrl) {
   }, [siteId, workerUrl]);
 }
 ```
+
+---
+
+## 🧩 Live Stats Widget Embedding & Requirements
+
+The Live Stats Widget displays real-time active visitors and total pageviews counts directly on your target website.
+
+### 📋 Integration Requirements
+1. **DOM Elements**: The target page's HTML must contain elements with specific IDs for values to be inserted:
+   - `id="prism-widget-count"`: Holds the live visitors number.
+   - `id="prism-widget-total"`: Holds the total pageviews number.
+2. **CORS & CSP Headers**: The website hosting the widget must allow HTTP `connect-src` fetch requests to your worker's domain.
+3. **Endpoint URL**: The fetch script must query `/api/widget?siteId=YOUR_SITE_ID` from your worker domain.
+
+### 💻 Copy-Paste HTML Widget Snippet
+Insert this complete block anywhere in your website's body:
+
+```html
+<!-- Live Visitor Widget Container -->
+<div id="prism-analytics-widget" style="width: 100%; max-width: 320px; font-family: system-ui, sans-serif; background: #0c0a12; color: #f4f3f6; border-radius: 16px; padding: 18px; border: 1px solid rgba(139, 108, 245, 0.25); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.6); position: relative; overflow: hidden;">
+  <div style="position: absolute; inset: 0; background: radial-gradient(circle at top right, rgba(139, 108, 245, 0.12), transparent 70%); pointer-events: none;"></div>
+  <div style="display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 2;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 12px #10b981; animation: prismPulse 1.8s infinite ease-in-out;"></span>
+      <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #10b981;">Live Visitors</span>
+    </div>
+    <div style="font-size: 10px; color: #787582; font-weight: 500;">PrismAnalytics</div>
+  </div>
+  <div style="margin-top: 14px; display: flex; align-items: baseline; gap: 8px; position: relative; z-index: 2;">
+    <div id="prism-widget-count" style="font-size: 38px; font-weight: 800; color: #ffffff; line-height: 1;">—</div>
+    <div style="font-size: 12px; color: #a39fae; font-weight: 500;">active right now</div>
+  </div>
+  <div style="margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 10px; display: flex; justify-content: space-between; font-size: 10px; color: #787582; position: relative; z-index: 2;">
+    <div>Total Pageviews: <span id="prism-widget-total" style="color: #c9c7d0; font-weight: 600;">—</span></div>
+    <div style="color: rgba(139, 108, 245, 0.85); font-weight: 600;">🛡️ Cookie-Free</div>
+  </div>
+</div>
+
+<style>
+@keyframes prismPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.5; }
+}
+</style>
+
+<!-- Live Data Fetcher Script -->
+<script>
+(function() {
+  const workerUrl = 'https://prismanalytics.sudhirdevops1.workers.dev';
+  const siteId = 'pa_YOUR_SITE_ID';
+  const url = workerUrl + '/api/widget?siteId=' + siteId;
+
+  function updateWidget() {
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        const countEl = document.getElementById('prism-widget-count');
+        const totalEl = document.getElementById('prism-widget-total');
+        if (countEl && data.liveCount !== undefined) countEl.textContent = Number(data.liveCount).toLocaleString();
+        if (totalEl && data.totalViews !== undefined) totalEl.textContent = Number(data.totalViews).toLocaleString();
+      })
+      .catch(err => {});
+  }
+  
+  setInterval(updateWidget, 8000);
+  updateWidget();
+})();
+</script>
+```
+
